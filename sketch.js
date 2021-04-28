@@ -1,89 +1,74 @@
-var Example = Example || {};
 
-Example.newtonsCradle = function() {
-    var Engine = Matter.Engine,
-        Render = Matter.Render,
-        Runner = Matter.Runner,
-        Body = Matter.Body,
-        Composites = Matter.Composites,
-        MouseConstraint = Matter.MouseConstraint,
-        Mouse = Matter.Mouse,
-        World = Matter.World;
 
-    // create engine
-    var engine = Engine.create(),
-        world = engine.world;
 
-    // create renderer
-    var render = Render.create({
-        element: document.body,
-        engine: engine,
-        options: {
-            width: 800,
-            height: 600,
-            showVelocity: true
-        }
-    });
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
+const Constraint = Matter.Constraint;
 
-    Render.run(render);
+function preload()
+{
+	
+}
 
-    // create runner
-    var runner = Runner.create();
-    Runner.run(runner, engine);
+function setup() {
+	createCanvas(windowWidth, windowHeight);
 
-    // add bodies
-    var cradle = Composites.newtonsCradle(280, 100, 5, 30, 200);
-    World.add(world, cradle);
-    Body.translate(cradle.bodies[0], { x: -180, y: -100 });
-    
-    cradle = Composites.newtonsCradle(280, 380, 7, 20, 140);
-    World.add(world, cradle);
-    Body.translate(cradle.bodies[0], { x: -140, y: -100 });
 
-    // add mouse control
-    var mouse = Mouse.create(render.canvas),
-        mouseConstraint = MouseConstraint.create(engine, {
-            mouse: mouse,
-            constraint: {
-                stiffness: 0.2,
-                render: {
-                    visible: false
-                }
-            }
-        });
+	engine = Engine.create();
+	world = engine.world;
 
-    World.add(world, mouseConstraint);
+	//Create the Bodies Here.
+  Bob1 = new Bob(width/2,height-300,30);
+  
+  Bob2 = new Bob(width/2-60,height-300,30);
+  
+  Bob3 = new Bob(width/2-120,height-300,30);
 
-    // keep the mouse in sync with rendering
-    render.mouse = mouse;
+  Bob4 = new Bob(width/2+60,height-300,30);
+  
+	Bob5 = new Bob(width/2+120,height-300,30);
+	
+	roof = new Roof(width/2,height-550,300,40);
 
-    // fit the render viewport to the scene
-    Render.lookAt(render, {
-        min: { x: 0, y: 50 },
-        max: { x: 800, y: 600 }
-    });
+	rope1 = new Chain(Bob3.body,roof.body,-120,0);
 
-    // context for MatterTools.Demo
-    return {
-        engine: engine,
-        runner: runner,
-        render: render,
-        canvas: render.canvas,
-        stop: function() {
-            Matter.Render.stop(render);
-            Matter.Runner.stop(runner);
-        }
-    };
-};
-
-Example.newtonsCradle.title = 'Newton\'s Cradle';
-Example.newtonsCradle.for = '>=0.14.2';
-
-if (typeof module !== 'undefined') {
-    module.exports = Example.newtonsCradle;
+  rope2 = new Chain(Bob2.body,roof.body,-60,0);
+  
+  rope3 = new Chain(Bob1.body,roof.body,0,0);   
+  rope4 = new Chain(Bob4.body,roof.body,60,0);
+  rope5 = new Chain(Bob5.body,roof.body,120,0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+	Engine.run(engine);
+  
 }
 
 
+function draw() {
+  rectMode(CENTER);
+  background(55);
 
+  Bob1.display();
+  Bob2.display();
+  Bob3.display();
+  Bob4.display();
+  Bob5.display();
 
+  roof.display();
+  rope1.display();
+  rope2.display();
+  rope3.display();
+  rope4.display();
+  rope5.display();
 
+  drawSprites();
+  keyPressed();
+
+  text (mouseX+" , "+mouseY,mouseX,mouseY);
+}
+
+function keyPressed() {
+  if(keyCode === 32) {
+    Matter.Body.applyForce(Bob3.body,Bob3.body.position,{x:-730,y: 0});
+  }
+}
