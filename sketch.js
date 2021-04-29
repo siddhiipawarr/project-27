@@ -67,8 +67,9 @@ function draw() {
   text (mouseX+" , "+mouseY,mouseX,mouseY);
 }
 
-function keyPressed() {
-  if(keyCode === 32) {
-    Matter.Body.applyForce(Bob3.body,Bob3.body.position,{x:-730,y: 0});
-  }
-}
+function keyPressed()
+ { if (keyCode === UP_ARROW) {
+    Matter.Body.applyForce(bob1.body,bob1.body.position, 
+    {x:-50,y:-45});
+     } 
+    }
